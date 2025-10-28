@@ -3,10 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import backend as bk
 
-st.set_page_config(page_title="DU College Recommender 🎓", page_icon="🎓", layout="wide")
+st.set_page_config(page_title="Delhi Engineering College Recommender 🎓", page_icon="🎓", layout="wide")
 
-st.title("🎓 DU College Recommendation System")
-st.write("Find your best DU college based on your JEE percentile!")
+st.title("🎓 Delhi Engineering College Recommendation System")
+st.write("Find your best engineering college in Delhi based on your JEE percentile!")
 
 percentile = st.slider("Enter your JEE Percentile:", 0.0, 100.0, 90.0)
 
@@ -69,7 +69,8 @@ st.sidebar.markdown("""
  **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR PHASE-1, DELHI-110091
  
  **Description:**  
- This AI project analyzes JEE percentile data to recommend the most suitable Delhi University colleges and predicts next year’s cutoff using Linear Regression.  
+ This AI project analyzes JEE percentile data to recommend the most suitable Delhi Engineering colleges for BTECH and predicts next year’s cutoff using Linear Regression.  
  It features an interactive frontend built using Streamlit.
 
 """)
+
