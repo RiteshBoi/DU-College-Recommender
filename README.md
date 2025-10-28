@@ -1,2 +1,2 @@
-# DU-College-Recommender
-Streamlit web app predicting best DU colleges using JEE percentile 📊
+# Delhi-Engineering-College-Recommender
+Streamlit web app predicting the best-suited Engineering colleges for BTECH using JEE percentile 📊
