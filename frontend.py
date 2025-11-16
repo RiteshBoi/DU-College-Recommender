@@ -10,7 +10,7 @@ st.write("Suggests colleges based on your JEE percentile.")
 percentile = st.slider("Select Your JEE Percentile", 80, 100, 90)
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["Best Matches","All Colleges","Cutoff Trend"])
+tab1, tab2, tab3 = st.tabs(["Best Matches","All Colleges","Cutoff Trend"])
 
 
 # ----------------- TAB 1 -------------------
@@ -62,4 +62,5 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091
 """)
+
 
