@@ -16,19 +16,6 @@ df['Cutoff_2025'] = df['Closing_Rank'].apply(rank_to_percentile)
 college_data = df[['College', 'Branch', 'Cutoff_2025']]
 
 def best_suited(percentile):
-    if percentile == 100:
-        return college_data[(college_data['Cutoff_2025'] >= 98) & 
-                            (college_data['Cutoff_2025'] <= 99)].head(20)
-
-    exact = college_data[college_data['Cutoff_2025'] == percentile]
-    if not exact.empty:
-        return exact.head(20)
-
-    lower = college_data[college_data['Cutoff_2025'] < percentile].copy()
-    lower['diff'] = percentile - lower['Cutoff_2025']
-    return lower.sort_values(by='diff').head(20).drop(columns=['diff'])
-
-def additional_options(percentile):
     lower = college_data[college_data['Cutoff_2025'] < percentile].copy()
     lower['diff'] = percentile - lower['Cutoff_2025']
     return lower.sort_values(by='diff').head(30).drop(columns=['diff'])
@@ -42,3 +29,4 @@ def get_trend_data():
         "Cutoff_Percentile": [82.5, 84.2, 85.1, 86.8, 88.0, 89.5, 90.2, 91.0, 92.3, 93.8, 94.6]
     }
     return pd.DataFrame(data)
+
