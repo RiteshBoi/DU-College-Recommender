@@ -1,15 +1,16 @@
 import streamlit as st
 import backend as bk
+import altair as alt
 
 st.set_page_config(page_title="College Recommendation System", layout="wide")
 
 st.title("Delhi College Recommendation System")
-st.write("This tool suggests Delhi engineering colleges based on your JEE percentile.")
+st.write("This tool recommends Delhi engineering colleges based on your JEE percentile.")
 
 # User input
 percentile = st.slider("Enter your JEE Percentile", 60, 100, 85)
 
-# Navigation
+# Tabs
 tab1, tab2, tab3, tab4 = st.tabs([
     "Best Matches",
     "Additional Options",
@@ -17,29 +18,48 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "Cutoff Trend"
 ])
 
-# Tab 1: Best matches
+# Tab 1: Exact or closest matches (Top 20)
 with tab1:
-    st.subheader("Best Options for Your Percentile")
+    st.subheader("Top 20 Best Match Colleges & Branches")
     result = bk.best_suited(percentile)
-    st.dataframe(result, use_container_width=True)
+    if not result.empty:
+        st.dataframe(result.reset_index(drop=True), use_container_width=True)
+        st.caption("Showing up to 20 exact or closest matches for your percentile.")
+    else:
+        st.warning("No exact or close matches found.")
 
-# Tab 2: Additional options
+# Tab 2: Additional options (Top 30 below percentile)
 with tab2:
-    st.subheader("Other Nearby Options")
+    st.subheader("Top 30 Additional Suggestions")
     result = bk.additional_options(percentile)
-    st.dataframe(result, use_container_width=True)
+    st.dataframe(result.reset_index(drop=True), use_container_width=True)
+    st.caption("These cutoffs are slightly below your percentile.")
 
-# Tab 3: All colleges data
+# Tab 3: All data
 with tab3:
     st.subheader("All Colleges with 2025 Cutoffs")
     st.dataframe(bk.show_all_cutoffs(), use_container_width=True)
 
-# Tab 4: Cutoff trend visualization
+# Tab 4: Static (non-resizing) line graph for JEE trend
 with tab4:
     st.subheader("JEE Advanced Cutoff Trend (2015–2025)")
-    trend = bk.get_trend_data().sort_values(by="Year")
-    st.line_chart(trend.set_index("Year")["Cutoff_Percentile"], height=400)
-    st.caption("Displays JEE Advanced cutoff percentiles (2015–2025).")
+    trend = bk.get_trend_data()
+
+    chart = (
+        alt.Chart(trend)
+        .mark_line(point=True, color="steelblue")
+        .encode(
+            x=alt.X("Year:O", title="Year"),
+            y=alt.Y("Cutoff_Percentile:Q", title="Cutoff Percentile (80–100)", scale=alt.Scale(domain=[80, 100])),
+            tooltip=["Year", "Cutoff_Percentile"]
+        )
+        .properties(width=700, height=400, title="JEE Advanced Cutoff Trend")
+        .configure_title(fontSize=16, anchor="middle")
+        .configure_axis(labelFontSize=12, titleFontSize=13)
+    )
+
+    st.altair_chart(chart, use_container_width=False)
+    st.caption("Static chart — does not resize when scrolling.")
 
 # Footer
 st.markdown("""
@@ -47,7 +67,7 @@ Project by Class 12 Students
 Subject: Artificial Intelligence (843)
 """)
 
-# Sidebar info
+# Sidebar
 st.sidebar.title("Project Info")
 st.sidebar.markdown("""
 **Team Members**  
@@ -61,5 +81,5 @@ st.sidebar.markdown("""
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR PHASE-1, DELHI-110091  
 
 **Description:**  
-This AI project analyzes JEE percentile data to recommend suitable Delhi engineering colleges for B.Tech and visualizes cutoff trends using Streamlit.
+This AI project suggests best-suited Delhi engineering colleges based on JEE percentile and shows cutoff trends using Streamlit.
 """)
