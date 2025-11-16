@@ -1,8 +1,7 @@
 import pandas as pd
 
-# -----------------------------------------------------------
 # College Data (20 Colleges × 10 Branches)
-# -----------------------------------------------------------
+
 colleges = [
     'DTU', 'NSIT', 'IIIT Delhi', 'IGDTUW', 'MAIT', 'MSIT', 'BVP', 'DCE', 'NIT Delhi', 'GTBIT',
     'JMI', 'USICT', 'ADGITM', 'BVCOE', 'HMRITM', 'NIEC', 'Maharaja Surajmal', 'BPIT',
@@ -28,9 +27,8 @@ college_data = pd.DataFrame({
     "Cutoff_2025": cutoffs_2025
 })
 
-# -----------------------------------------------------------
+
 # Functions
-# -----------------------------------------------------------
 
 def best_suited(percentile):
     """Return exact matches first; if none, return top 20 closest lower cutoffs."""
@@ -57,3 +55,4 @@ def get_trend_data():
         "Cutoff_Percentile": [82.5, 84.2, 85.1, 86.8, 88.0, 89.5, 90.2, 91.0, 92.3, 93.8, 94.6]
     }
     return pd.DataFrame(data)
+
