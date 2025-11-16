@@ -10,35 +10,24 @@ st.write("Suggests colleges based on your JEE percentile.")
 percentile = st.slider("Select Your JEE Percentile", 80, 100, 90)
 
 
-tab1, tab2, tab3, tab4 = st.tabs(["Best Matches","Additional Options","All Colleges","Cutoff Trend"])
+tab1, tab2, tab3, tab4 = st.tabs(["Best Matches","All Colleges","Cutoff Trend"])
 
 
 # ----------------- TAB 1 -------------------
 with tab1:
     st.subheader("Best Matches for Your Percentile")
     result = bk.best_suited(percentile)
-
-    if result is not None and not result.empty:
-        st.dataframe(result.reset_index(drop=True), use_container_width=True)
-    else:
-        st.warning("No matching colleges found for this percentile.")
+    st.dataframe(result.reset_index(drop=True), use_container_width=True)
 
 
 # ----------------- TAB 2 -------------------
 with tab2:
-    st.subheader("Additional Options")
-    result = bk.additional_options(percentile)
-    st.dataframe(result.reset_index(drop=True), use_container_width=True)
-
-
-# ----------------- TAB 3 -------------------
-with tab3:
     st.subheader("All Colleges Cutoffs")
     st.dataframe(bk.show_all_cutoffs(), use_container_width=True)
 
 
-# ----------------- TAB 4 -------------------
-with tab4:
+# ----------------- TAB 3 -------------------
+with tab3:
     st.subheader("JEE Advanced Cutoff Trend (2015–2025)")
 
     trend = bk.get_trend_data()
@@ -73,3 +62,4 @@ st.sidebar.markdown("""
 
 **School:** AMITY INTERNATIONAL SCHOOL, MAYUR VIHAR, DELHI -110091
 """)
+
