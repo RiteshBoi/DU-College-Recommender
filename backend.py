@@ -1,6 +1,8 @@
 import pandas as pd
 
+# -----------------------------------------------------------
 # College Data (20 Colleges × 10 Branches)
+# -----------------------------------------------------------
 colleges = [
     'DTU', 'NSIT', 'IIIT Delhi', 'IGDTUW', 'MAIT', 'MSIT', 'BVP', 'DCE', 'NIT Delhi', 'GTBIT',
     'JMI', 'USICT', 'ADGITM', 'BVCOE', 'HMRITM', 'NIEC', 'Maharaja Surajmal', 'BPIT',
@@ -8,7 +10,6 @@ colleges = [
 ]
 branches = ['CSE', 'ECE', 'ME', 'EE', 'CE', 'IT', 'ICE', 'SE', 'PIE', 'ENE']
 
-# Representative 2025 cutoffs 
 cutoffs_2025 = [
     98, 97, 96, 95, 94, 96, 95, 94, 93, 92, 97, 96, 95, 94, 93, 94, 93, 92, 91, 90, 96, 95, 94, 93,
     92, 95, 94, 93, 92, 91, 94, 93, 92, 91, 90, 92, 91, 90, 89, 88, 90, 89, 88, 87, 86, 89, 88, 87,
@@ -21,24 +22,31 @@ cutoffs_2025 = [
     83, 82, 81, 84, 83, 82, 81, 80
 ]
 
-# Create DataFrame
 college_data = pd.DataFrame({
     "College": [c for c in colleges for _ in branches],
     "Branch": branches * len(colleges),
     "Cutoff_2025": cutoffs_2025
 })
 
-
-# Core Functions
+# -----------------------------------------------------------
+# Functions
+# -----------------------------------------------------------
 
 def best_suited(percentile):
-    return college_data[college_data["Cutoff_2025"] <= percentile]
+    """Return exact matches first; if none, return top 20 closest lower cutoffs."""
+    exact = college_data[college_data["Cutoff_2025"] == percentile]
+    if not exact.empty:
+        return exact.head(20)
+    else:
+        lower = college_data[college_data["Cutoff_2025"] < percentile].copy()
+        lower["Difference"] = percentile - lower["Cutoff_2025"]
+        return lower.sort_values(by="Difference").head(20).drop(columns=["Difference"])
 
 def additional_options(percentile):
-    return college_data[
-        (college_data["Cutoff_2025"] > percentile) & 
-        (college_data["Cutoff_2025"] <= percentile + 5)
-    ]
+    """Return top 30 colleges below user's percentile."""
+    df = college_data[college_data["Cutoff_2025"] < percentile].copy()
+    df["Difference"] = percentile - df["Cutoff_2025"]
+    return df.sort_values(by="Difference").head(30).drop(columns=["Difference"])
 
 def show_all_cutoffs():
     return college_data
