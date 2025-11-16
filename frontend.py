@@ -31,9 +31,18 @@ with tab3:
     st.dataframe(bk.show_all_cutoffs(), use_container_width=True)
 
 with tab4:
-    st.subheader("Cutoff Trend (2015–2025)")
-    trend = bk.get_trend_data()
-    st.line_chart(trend.set_index("Year"))
+    st.subheader("JEE Advanced Cutoff Trend (2015–2025)")
+
+    trend = bk.get_trend_data() 
+
+    trend = trend.sort_values(by="Year")
+    trend = trend[(trend["Year"] >= 2015) & (trend["Year"] <= 2025)]
+    trend = trend[(trend["Cutoff_Percentile"] >= 80) & (trend["Cutoff_Percentile"] <= 100)]
+
+    st.line_chart(
+        trend.set_index("Year")["Cutoff_Percentile"],
+        height=400,
+    )
 
 st.markdown("""
 Project by Class 12 Students  
@@ -56,4 +65,5 @@ st.sidebar.markdown("""
 This AI project analyzes JEE percentile data to recommend suitable Delhi engineering colleges for B.Tech and predicts future cutoffs using Linear Regression.  
 It features an interactive frontend built using Streamlit.
 """)
+
 
