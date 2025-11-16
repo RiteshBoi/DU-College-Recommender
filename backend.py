@@ -81,9 +81,13 @@ def additional_options(percentile):
 
 def show_all_cutoffs():
     return df
-
+    
 def get_trend_data():
-    return trend_df
+    data = {
+        "Year": list(range(2015, 2026)),
+        "Cutoff_Percentile": [82.5, 84.2, 85.1, 86.8, 88.0, 89.5, 90.2, 91.0, 92.3, 93.8, 94.6]
+    }
+    return pd.DataFrame(data)
 
 def plot_trend_bar_graph():
     years = trend_df["Year"]
@@ -97,3 +101,4 @@ def plot_trend_bar_graph():
     plt.title("Cutoff Trend (2015–2025)")
     plt.tight_layout()
     plt.show()
+
