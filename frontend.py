@@ -59,7 +59,6 @@ with tab4:
     )
 
     st.altair_chart(chart, use_container_width=False)
-    st.caption("Static chart — does not resize when scrolling.")
 
 # Footer
 st.markdown("""
@@ -83,3 +82,4 @@ st.sidebar.markdown("""
 **Description:**  
 This AI project suggests best-suited Delhi engineering colleges based on JEE percentile and shows cutoff trends using Streamlit.
 """)
+
